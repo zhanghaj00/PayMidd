@@ -1,4 +1,4 @@
-package main.rest
+package main.socket
 
 
 import akka.actor.{Props, ActorLogging, Actor}
