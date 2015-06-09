@@ -7,12 +7,8 @@ import akka.util.Timeout
 /**
  * Created by zhanghao on 2015/6/9.
  */
-object UserActor{
-  def apply(userId:String):Props={
-    Props(classOf[UserActor],userId)
-  }
-}
-class UserActor(userId:String ) extends Actor with ActorLogging{
+
+class UserActor extends Actor with ActorLogging{
 
   implicit val timeout = Timeout(5 seconds)
 
@@ -21,12 +17,15 @@ class UserActor(userId:String ) extends Actor with ActorLogging{
     case userRegister:UserRegister =>
       log.info(s"Getting a room ${userRegister.userId} for the date  .")
       if(context.child(userRegister.userId).isEmpty){
-        val userActor = context.actorOf(UserActor(userRegister.userId))
+        log.info("new user:"+userRegister.userId)
+        val userActor = context.actorOf(Props[UserActor],userRegister.userId)
         userActor ! KeepConnection
+        sender ! User("414.80606",userRegister.userId,"pasworld")
       }else{
         context.child(userRegister.userId).get ! KeepConnection
+        sender ! User("414.80608",userRegister.userId,"pasworld")
       }
-    case keeyConnection:KeepConnection =>
+    case keeyConnection:KeepConnection => println("keep connection")
 
   }
 }

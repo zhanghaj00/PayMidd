@@ -4,12 +4,14 @@ import akka.actor._
 import akka.util.Timeout
 import main.rest.Domain.User
 import spray.http.StatusCodes
-import scala.concurrent.duration._
 import spray.httpx.SprayJsonSupport
+import scala.concurrent.duration._
 import spray.routing._
-
 import spray.json.DefaultJsonProtocol
-import spray.httpx.unmarshalling._
+import akka.pattern.pipe
+import akka.pattern.ask
+
+
 /**
  * Created by zhanghao on 2015/6/8.
  */
@@ -27,18 +29,19 @@ trait RestApi extends HttpService with PersonJsonSupport{
     implicit val timeout = Timeout(10 seconds)
 
 
-    val userManager = actorRefFactory.actorOf(Props[],"userManager")
+    val userManager = actorRefFactory.actorOf(Props(classOf[UserActor]),"userManager")
+
+
+
     def routes:Route = {
-        pathPrefix("userId" / IntNumber){
+        pathPrefix("userId" / Segment){
           userid=> {
             path("firstSigin") {
               get {
                 requestContext =>
-                  cookie("userId"){nameCookie=>
-                    complete(StatusCodes.OK,nameCookie.content)
+                  val responder = createResponder(requestContext,userManager)
+                  userManager.ask(UserRegister(userid)).pipeTo(responder)
 
-                  }
-                  requestContext.complete(StatusCodes.OK, userid.toString)
               }
             }
           }
@@ -59,10 +62,7 @@ class MyResponder(requestContext:RequestContext,actorRef:ActorRef) extends Actor
       self ! PoisonPill
   }
 }
-
-
-
-
+import spray.httpx.marshalling.BasicMarshallers
 trait PersonJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val PersonFormat = jsonFormat2(Order)
 }
