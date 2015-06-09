@@ -8,9 +8,9 @@ import spray.can.Http
 /**
  * Created by zhanghao on 2015/6/8.
  */
-class MainEnter extends App {
+object MainEnter extends App {
 
-  val system = ActorSystem("my-rest-server")
+  implicit  val system = ActorSystem("my-rest-server")
 
   val actorEnter = system.actorOf(Props[RestInterface],"mySparyEnter")
 
