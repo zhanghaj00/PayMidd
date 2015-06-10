@@ -19,13 +19,14 @@ class UserActor extends Actor with ActorLogging{
       if(context.child(userRegister.userId).isEmpty){
         log.info("new user:"+userRegister.userId)
         val userActor = context.actorOf(Props[UserActor],userRegister.userId)
-        userActor ! KeepConnection
+        userActor ! KeepConnection(userRegister.userId)
         sender ! User("414.80606",userRegister.userId,"pasworld")
       }else{
-        context.child(userRegister.userId).get ! KeepConnection
+        log.info("not a new user"+userRegister.userId)
+        context.child(userRegister.userId).get ! KeepConnection(userRegister.userId)
         sender ! User("414.80608",userRegister.userId,"pasworld")
       }
-    case keeyConnection:KeepConnection => println("keep connection")
+    case keeyConnection:KeepConnection => println("keep connection"+keeyConnection.userId)
 
   }
 }

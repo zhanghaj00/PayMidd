@@ -22,7 +22,7 @@ class RestInterface extends Actor with RestApi{
   def receive =runRoute(routes)
 }
 
-trait RestApi extends HttpService with PersonJsonSupport{
+trait RestApi extends HttpService {
 
     implicit def executionContext = actorRefFactory.dispatcher
 
@@ -54,16 +54,19 @@ trait RestApi extends HttpService with PersonJsonSupport{
   }
 }
 
-class MyResponder(requestContext:RequestContext,actorRef:ActorRef) extends Actor with ActorLogging{
-
+class MyResponder(requestContext:RequestContext,actorRef:ActorRef) extends Actor with ActorLogging {
+  import spray.httpx.SprayJsonSupport._
   def receive = {
     case user:User =>
       requestContext.complete(StatusCodes.OK,user)
       self ! PoisonPill
   }
 }
-import spray.httpx.marshalling.BasicMarshallers
-trait PersonJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
-  implicit val PersonFormat = jsonFormat2(Order)
+
+/*
+object PersonJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
+  implicit val userFormat = jsonFormat3(User)
 }
+*/
+
 case class Order(name:String,number:Int)
