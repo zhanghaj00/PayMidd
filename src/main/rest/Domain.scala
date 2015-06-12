@@ -7,9 +7,9 @@ import spray.json.DefaultJsonProtocol
  */
 object Domain {
 
-  case class User(email:String,userName:String,passWord:String)
+  case class User(email:String,userName:String,passWord:String) extends Serializable
 
-  object User extends DefaultJsonProtocol{
-      implicit  val format = jsonFormat3(User.apply)
+  object  User extends DefaultJsonProtocol{
+        implicit  val format = jsonFormat3(User.apply)
   }
 }

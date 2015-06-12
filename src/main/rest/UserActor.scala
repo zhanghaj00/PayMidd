@@ -15,20 +15,21 @@ class UserActor extends Actor with ActorLogging{
   def receive = {
 
     case userRegister:UserRegister =>
-      log.info(s"Getting a room ${userRegister.userId} for the date  .")
-      if(context.child(userRegister.userId).isEmpty){
-        log.info("new user:"+userRegister.userId)
-        val userActor = context.actorOf(Props[UserActor],userRegister.userId)
-        userActor ! KeepConnection(userRegister.userId)
-        sender ! User("414.80606",userRegister.userId,"pasworld")
+      log.info(s"Getting a room ${userRegister.user.email} for the date  .")
+      if(context.child(userRegister.user.email).isEmpty){
+        log.info("new user:"+userRegister.user.email)
+        val userActor = context.actorOf(Props[UserActor],userRegister.user.email)
+        userActor ! KeepConnection(userRegister.user.email)
+        sender ! userRegister.user
       }else{
-        log.info("not a new user"+userRegister.userId)
-        context.child(userRegister.userId).get ! KeepConnection(userRegister.userId)
-        sender ! User("414.80608",userRegister.userId,"pasworld")
+        log.info("not a new user"+userRegister.user.email)
+        context.child(userRegister.user.email).get ! KeepConnection(userRegister.user.email)
+        sender ! userRegister.user
       }
     case keeyConnection:KeepConnection => println("keep connection"+keeyConnection.userId)
-
+    case user:User =>
+    case _ => log.info("no thing ")
   }
 }
-case class UserRegister(userId:String)
+case class UserRegister(user:User)
 case class KeepConnection(userId:String)

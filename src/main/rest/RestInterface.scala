@@ -5,6 +5,7 @@ import akka.util.Timeout
 import main.rest.Domain.User
 import spray.http.StatusCodes
 import spray.httpx.SprayJsonSupport
+import spray.httpx.unmarshalling.FormDataUnmarshallers
 import scala.concurrent.duration._
 import spray.routing._
 import spray.json.DefaultJsonProtocol
@@ -15,14 +16,14 @@ import akka.pattern.ask
 /**
  * Created by zhanghao on 2015/6/8.
  */
-class RestInterface extends Actor with RestApi{
+class RestInterface extends Actor with RestApi with FormDataUnmarshallers {
 
   def actorRefFactory = context
 
   def receive =runRoute(routes)
 }
 
-trait RestApi extends HttpService {
+trait RestApi extends HttpService with FormDataUnmarshallers {
 
     implicit def executionContext = actorRefFactory.dispatcher
 
@@ -32,20 +33,36 @@ trait RestApi extends HttpService {
     val userManager = actorRefFactory.actorOf(Props(classOf[UserActor]),"userManager")
 
 
-
+    import spray.httpx.SprayJsonSupport._
     def routes:Route = {
-        pathPrefix("userId" / Segment){
-          userid=> {
-            path("firstSigin") {
-              get {
-                requestContext =>
-                  val responder = createResponder(requestContext,userManager)
-                  userManager.ask(UserRegister(userid)).pipeTo(responder)
-
+      path("firstSigin") {
+        post {
+          entity(as[User]) { user =>
+            requestContext =>
+              println(user)
+              val responder = createResponder(requestContext, userManager)
+              userManager.ask(UserRegister(user)).pipeTo(responder)
+          }
+        }
+      }~
+        pathPrefix("email" / Segment){
+          email=>{
+            pathPrefix("userId" / Segment){
+              userId=>{
+                get{
+                  path("passWord" / Segment){
+                    passWord=> requestContext=>
+                      val user = User(email,userId,passWord)
+                      val responder = createResponder(requestContext,userManager)
+                      userManager.ask(UserRegister(user)).pipeTo(responder)
+                  }
+                }
               }
             }
           }
         }
+
+
     }
 
 
