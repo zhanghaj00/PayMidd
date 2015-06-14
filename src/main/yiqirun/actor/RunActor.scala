@@ -7,7 +7,7 @@ import main.yiqirun.domain.WebSocket
 /**
  * Created by zhanghao on 2015/6/12.
  */
-class RunActor extends Actor with ActorLogging{
+/*class RunActor extends Actor with ActorLogging{
 
 
   def receive = {
@@ -19,4 +19,4 @@ class RunActor extends Actor with ActorLogging{
         log.debug("registered monitor for url {}", ws.path)
       }
   }
-}
+}*/

@@ -24,7 +24,7 @@ trait RestApi extends HttpService{
 
 
   def routes:Route = {
-
+    case _ =>
   }
   def createResponder(requestContext: RequestContext, actorRef: ActorRef) = {
     actorRefFactory.actorOf(Props(classOf[MyResponder],requestContext, actorRef))

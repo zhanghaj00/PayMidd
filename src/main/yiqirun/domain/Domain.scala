@@ -9,8 +9,8 @@ import spray.json.DefaultJsonProtocol
  */
 class Domain {
 
-  case class User(email:String,userId:String,password:String)
-  case class Run(author:String,createTime:Date,context:String,tag:String)
+  case class User(email:String,userId:String,password:String) extends Serializable
+  case class Run(author:String,createTime:String,context:String,tag:String) extends Serializable
 
   case object UserLogin
   case object UserLogout

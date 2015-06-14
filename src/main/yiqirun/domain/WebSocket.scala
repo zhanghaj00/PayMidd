@@ -16,7 +16,7 @@ object WebSocket {
   case class Send(msg : String) extends WebSocketMessage
   case object Release extends WebSocketMessage
   case class Register(request : HttpRequest, handler : ActorRef, autoping : Boolean = false)
-  private[websocket] object Ping extends WebSocketMessage
+  private[main] object Ping extends WebSocketMessage
 }
 trait WebSocket {
   def send(message : String) : Unit
