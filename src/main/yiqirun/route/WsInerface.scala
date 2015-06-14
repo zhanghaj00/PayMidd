@@ -5,8 +5,8 @@ import akka.actor.{Props, ActorRef, Actor, ActorLogging}
 import main.yiqirun.domain.WebSocket
 
 import spray.can.websocket.WebSocketServerWorker
-import spray.can.websocket.frame.TextFrame
-import spray.http.HttpRequest
+import spray.can.websocket.frame.{StatusCode, CloseFrame, TextFrame}
+import spray.http.{ HttpRequest}
 import spray.routing._
 import akka.util.Timeout
 import scala.concurrent.duration._
@@ -37,7 +37,7 @@ class WsInterface(sender:ActorRef)  extends Actor with  ActorLogging  with HttpS
     case WebSocket.Register(request, actor, ping) =>
      // if (ping) pinger = Some(context.system.scheduler.scheduleOnce(110.seconds, self, WebSocket.Ping))
       val handler = actor
-     // uripath = request.uri.path.toString
+      uripath = request.uri.path.toString
       handler ! WebSocket.Open(this)
   }
 
@@ -59,6 +59,10 @@ class WsInterface(sender:ActorRef)  extends Actor with  ActorLogging  with HttpS
       println(message.utf8String)
   }
   def send(message : String) = send(TextFrame(message))
+  def close() = send(CloseFrame(StatusCode.NormalClose))
+
+  def path() = uripath
+  private var uripath = "/"
 }
 
 
