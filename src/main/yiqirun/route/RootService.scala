@@ -4,7 +4,6 @@ import akka.actor.{ActorRef, Props, ActorLogging, Actor}
 import akka.routing.Route
 import main.yiqirun.domain.WebSocket
 import spray.can.Http
-import spray.routing.RequestContext
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 

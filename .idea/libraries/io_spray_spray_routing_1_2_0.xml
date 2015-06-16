@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="io.spray:spray-routing:1.2.0" type="repository">
+    <properties maven-id="io.spray:spray-routing:1.2.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-routing/1.2.0/spray-routing-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-caching/1.2.0/spray-caching-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-util/1.2.0/spray-util-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/scala-lang/scala-library/2.10.3/scala-library-2.10.3.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/googlecode/concurrentlinkedhashmap/concurrentlinkedhashmap-lru/1.4/concurrentlinkedhashmap-lru-1.4.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-can/1.2.0/spray-can-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-io/1.2.0/spray-io-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-http/1.2.0/spray-http-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/parboiled/parboiled-scala_2.10/1.1.6/parboiled-scala_2.10-1.1.6.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/parboiled/parboiled-core/1.1.6/parboiled-core-1.1.6.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/io/spray/spray-httpx/1.2.0/spray-httpx-1.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/jvnet/mimepull/mimepull/1.9.3/mimepull-1.9.3.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/chuusai/shapeless_2.10/1.2.4/shapeless_2.10-1.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/typesafe/akka/akka-osgi_2.10/2.2.3/akka-osgi_2.10-2.2.3.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/typesafe/akka/akka-actor_2.10/2.2.3/akka-actor_2.10-2.2.3.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/typesafe/config/1.0.2/config-1.0.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/osgi/org.osgi.core/4.2.0/org.osgi.core-4.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/osgi/org.osgi.compendium/4.2.0/org.osgi.compendium-4.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/spray-routing-1.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
