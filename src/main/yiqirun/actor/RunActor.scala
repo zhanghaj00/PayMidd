@@ -7,12 +7,16 @@ import main.yiqirun.domain.WebSocket
 /**
  * Created by zhanghao on 2015/6/12.
  */
-class RunActor extends Actor with ActorLogging{
+class RunActor(userID:String) extends Actor with ActorLogging{
 
 
   def receive = {
     case WebSocket.Open(ws) =>
-        log.debug("registered monitor for url {}", ws.path)
+        log.info("registered monitor for url..........{}", ws.path)
+         log.info("get user"+userID)
+    case WebSocket.Message(ws,msg) =>
+       ws.send(msg)
+
   }
 
 }

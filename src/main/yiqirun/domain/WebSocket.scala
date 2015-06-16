@@ -15,7 +15,7 @@ object WebSocket {
   case class Connect(host : String, port : Int, resource : String, withSsl : Boolean = false) extends WebSocketMessage
   case class Send(msg : String) extends WebSocketMessage
   case object Release extends WebSocketMessage
-  case class Register(request : HttpRequest, handler : ActorRef, autoping : Boolean = false)
+  case class Register(request : HttpRequest, handler : ActorRef, userID:String)
   private[main] object Ping extends WebSocketMessage
 }
 trait WebSocket {

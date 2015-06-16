@@ -25,7 +25,7 @@ class WsInterface  extends Actor with  ActorLogging  with HttpService with WebSo
 
   def actorRefFactory = context
 
-  val runActor = context.actorOf(Props[RunActor],"Run-Actor")
+ //   val runActor = context.actorOf(Props[RunActor],"Run-Actor")
 
 
   lazy val serverConnection = sender
@@ -45,16 +45,30 @@ class WsInterface  extends Actor with  ActorLogging  with HttpService with WebSo
     case WebSocket.Register(request, actor, ping) =>
         println("websocket register......................")
      // if (ping) pinger = Some(context.system.scheduler.scheduleOnce(110.seconds, self, WebSocket.Ping))
-      uripath = request.uri.path.toString
-      val handler = actor
-      handler ! WebSocket.Open(this)
+     // uripath = request.uri.path.toString
+
+      if(context.child(ping).isEmpty){
+        val handler = context.actorOf(Props(classOf[RunActor],ping),ping)
+        handler ! WebSocket.Open(this)
+      }else{
+        val handler = context.child(ping).get
+        handler ! WebSocket.Open(this)
+      }
+
+     // val handler = context.actorOf(Props(classOf[RunActor],ping),"Run-Actor")
+      //handler ! WebSocket.Open(this)
 
 
   }
   def routes:Route = {
-        implicit ctx =>
-          println("ok get ou "+ctx)
-          ctx.responder ! WebSocket.Register(ctx.request, serverConnection, true)
+        pathPrefix("ws"){
+          path("chat" / Segment){
+           userid => implicit ctx =>
+              println(userid)
+              ctx.responder ! WebSocket.Register(ctx.request, serverConnection, userid)
+          }
+        }
+
 
   }
   override  def handshaking: Receive = {
@@ -78,21 +92,21 @@ class WsInterface  extends Actor with  ActorLogging  with HttpService with WebSo
   override def businessLogic = {
     case TextFrame(message) =>
       println(message.utf8String)
-      send(TextFrame("messaage ======get"))
+
+      context.child("zhangjuan").get ! WebSocket.Message(this,message.utf8String)
     case UpgradedToWebSocket =>
-      println("upgrade websoeket.......................")
-      send(TextFrame("messaage ======upgrade "))
+
+
 
     case _ => println("11111111111111111111")
   }
   def send(message : String) = {
-    println("send message"+message)
     send(TextFrame(message))
   }
   def close() = send(CloseFrame(StatusCode.NormalClose) )
 
-  def path() = uripath
-  private var uripath = "/"
+  def path() = ""
+ /* private var uripath = "/"*/
 }
 
 
