@@ -33,7 +33,7 @@ class WsInterface(val serverConnection: ActorRef)  extends Actor with  ActorLogg
   val userSupervisorActor = context.system.actorSelection(Supervisors.userSupervisor)
 
   override def businessLogic = {
-    case websocket.UpgradedToWebSocket =>  userSupervisorActor ! UserConnected(id, self)
+    case websocket.UpgradedToWebSocket =>  userSupervisorActor ! UserConnected(id, self) // this 我们可以用redis来存放这些用户昵称和id
     case msg: TextFrame => {
      println( msg.payload.decodeString("UTF-8") )
     }
